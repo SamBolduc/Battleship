@@ -4,7 +4,13 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Fire
+  - HOTKEY_FORWARD
+  - HOTKEY_BACKWARD
+  - HOTKEY_RIGHT
+  - HOTKEY_LEFT
+  - HOTKEY_JUMP
+  - HOTKEY_SPRINT
+  - HOTKEY_INTERACT
   layers:
   - Default
   - TransparentFX
