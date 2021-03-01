@@ -1546,7 +1546,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 1
+  m_CollisionDetection: 3
 --- !u!114 &242986701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1778,13 +1778,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 1.8
+  m_Height: 3.5
   m_Radius: 0.5
   m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_StepOffset: 0.6
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &242988225
 GameObject:
   m_ObjectHideFlags: 0
@@ -2680,7 +2680,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: 4300002, guid: 510c4e1b4efba524182dd6d06e4faca8, type: 3}
   m_Bones:
@@ -11827,7 +11827,7 @@ GameObject:
   - component: {fileID: 1966859867}
   - component: {fileID: 1966859866}
   - component: {fileID: 1966859865}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Main Camera (1)
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -11874,7 +11874,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.01
-  far clip plane: 1000
+  far clip plane: 500
   field of view: 90
   orthographic: 0
   orthographic size: 5
