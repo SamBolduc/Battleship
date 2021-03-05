@@ -30,4 +30,9 @@ public class Parameters : MonoBehaviour
         _waitingTag = gameObject.tag;
     }
 
+    public void Save()
+    {
+
+    }
+
 }
