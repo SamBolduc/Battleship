@@ -1,5 +1,8 @@
 ﻿
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,73 +20,57 @@ public class HotkeysManager
         return _instance;
     }
 
-    private Dictionary<string, KeyCode> keys;
+    private readonly string _filePath = Application.dataPath + Path.DirectorySeparatorChar + "hotkeys.json";
+
+    public List<Hotkey> Keys { get; set; }
 
     public HotkeysManager()
     {
-        keys = new Dictionary<string, KeyCode>()
+        Keys = new List<Hotkey>()
         {
-            {"HOTKEY_FORWARD", KeyCode.W},
-            {"HOTKEY_BACKWARD", KeyCode.S},
-            {"HOTKEY_RIGHT", KeyCode.D},
-            {"HOTKEY_LEFT", KeyCode.A},
-            {"HOTKEY_JUMP", KeyCode.Space},
-            {"HOTKEY_SPRINT", KeyCode.LeftShift},
-            {"HOTKEY_INTERACT", KeyCode.E},
+            new Hotkey() {
+                Name = "HOTKEY_FORWARD",
+                KeyCode = KeyCode.W
+            },
+            new Hotkey() {
+                Name = "HOTKEY_BACKWARD",
+                KeyCode = KeyCode.S
+            },
+            new Hotkey() {
+                Name = "HOTKEY_RIGHT",
+                KeyCode = KeyCode.D
+            },
+            new Hotkey() {
+                Name = "HOTKEY_LEFT",
+                KeyCode = KeyCode.A
+            },
+            new Hotkey() {
+                Name = "HOTKEY_JUMP",
+                KeyCode = KeyCode.Space
+            },
+            new Hotkey() {
+                Name = "HOTKEY_SPRINT",
+                KeyCode = KeyCode.LeftShift
+            },
+            new Hotkey() {
+                Name = "HOTKEY_INTERACT",
+                KeyCode = KeyCode.E
+            },
         };
+        Load();
     }
     
     public void Set(string tag, KeyCode key)
     {
-        if(!keys.ContainsKey(tag))
+        Hotkey hotkey = GetHotkey(tag);
+        if(hotkey == null)
         {
             Debug.LogWarning("Hotkey tag : " + tag + " hasn't been found");
             return;
         }
 
-        keys[tag] = key;
-
-        Text text = GetButtonText(tag);
-        if(text == null)
-        {
-            return;
-        }
-
-        Color32 gray = new Color32(33, 33, 33, 255);
-        Color32 red = new Color32(211, 47, 47, 255);
-
-        foreach (KeyValuePair<string, KeyCode> entry in keys)
-        {
-            Text entryText = GetButtonText(entry.Key);
-            if (entryText != null)
-            {
-                entryText.color = gray;
-            }
-
-            bool isDuplicated = false;
-            foreach (KeyValuePair<string, KeyCode> subEntry in keys)
-            {
-                if(entry.Value == subEntry.Value && entry.Key != subEntry.Key)
-                {
-                    isDuplicated = true;
-                    break;
-                }
-            }
-
-            if(isDuplicated)
-            {
-                if (entryText != null)
-                {
-                    entryText.color = red;
-                }
-                else
-                {
-                    entryText.color = gray;
-                }
-            }
-        }
-
-        text.text = key.ToString();
+        hotkey.KeyCode = key;
+        UpdateButton(tag);
     }
 
     private Text GetButtonText(string tag)
@@ -110,6 +97,85 @@ public class HotkeysManager
         }
 
         return text;
+    }
+
+    public void UpdateButton(string tag)
+    {
+        Text text = GetButtonText(tag);
+        if (text == null)
+        {
+            return;
+        }
+
+        Color32 gray = new Color32(33, 33, 33, 255);
+        Color32 red = new Color32(211, 47, 47, 255);
+
+        foreach (Hotkey entry in Keys)
+        {
+            Text entryText = GetButtonText(entry.Name);
+            if (entryText != null)
+            {
+                entryText.color = gray;
+            }
+
+            bool isDuplicated = false;
+            foreach (Hotkey subEntry in Keys)
+            {
+                if (entry.KeyCode == subEntry.KeyCode && entry.Name != subEntry.Name)
+                {
+                    isDuplicated = true;
+                    break;
+                }
+            }
+
+            if (isDuplicated)
+            {
+                if (entryText != null)
+                {
+                    entryText.color = red;
+                }
+                else
+                {
+                    entryText.color = gray;
+                }
+            }
+        }
+
+        Hotkey keyCode = GetHotkey(tag);
+        if(keyCode != null)
+        {
+            Debug.LogWarning(keyCode.KeyCode.ToString());
+            text.text = keyCode.KeyCode.ToString();
+        }
+        else
+        {
+            Debug.LogWarning("Couldn't update button text because the keycode wasn't found");
+        }
+    }
+
+    private Hotkey GetHotkey(string name)
+    {
+        foreach (Hotkey key in Keys)
+        {
+            if (key.Name.Equals(name))
+            {
+                return key;
+            }
+        }
+        return null;
+    }
+
+    public void Save()
+    {
+        File.WriteAllText(_filePath, JsonConvert.SerializeObject(Keys));
+    }
+
+    public void Load()
+    {
+        if (File.Exists(_filePath))
+        {
+            Keys = JsonConvert.DeserializeObject<List<Hotkey>>(File.ReadAllText(_filePath));
+        }
     }
 
 }
