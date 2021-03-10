@@ -9,6 +9,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 {
     [RequireComponent(typeof (CharacterController))]
     [RequireComponent(typeof (AudioSource))]
+    [RequireComponent(typeof (Animator))]
     public class FirstPersonController : MonoBehaviour
     {
         [SerializeField] private bool m_IsWalking;
@@ -43,6 +44,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jumping;
         private AudioSource m_AudioSource;
 
+        private Animator animator;
         // Use this for initialization
         private void Start()
         {
@@ -55,7 +57,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_NextStep = m_StepCycle/2f;
             m_Jumping = false;
             m_AudioSource = GetComponent<AudioSource>();
-			m_MouseLook.Init(transform , m_Camera.transform);
+            animator = GetComponent<Animator>();
+
+            m_MouseLook.Init(animator, transform , m_Camera.transform);
         }
 
 
@@ -109,21 +113,35 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_MoveDir.x = desiredMove.x*speed;
             m_MoveDir.z = desiredMove.z*speed;
 
-
+            if(desiredMove.sqrMagnitude != 0 && !m_Jump && m_CharacterController.isGrounded)
+            {
+                animator.SetFloat("Speed_f", (speed * 10)/100);
+            }
+            else
+            {
+                animator.SetFloat("Speed_f", 0);
+            }
+            
             if (m_CharacterController.isGrounded)
             {
+                animator.SetBool("Grounded", true);
                 m_MoveDir.y = -m_StickToGroundForce;
 
                 if (m_Jump)
                 {
+                    animator.SetBool("Jump_b", true);
                     m_MoveDir.y = m_JumpSpeed;
                     PlayJumpSound();
                     m_Jump = false;
                     m_Jumping = true;
+                } else
+                {
+                    animator.SetBool("Jump_b", false);
                 }
             }
             else
             {
+                animator.SetBool("Grounded", false);
                 m_MoveDir += Physics.gravity*m_GravityMultiplier*Time.fixedDeltaTime;
             }
             m_CollisionFlags = m_CharacterController.Move(m_MoveDir*Time.fixedDeltaTime);
@@ -193,7 +211,14 @@ namespace UnityStandardAssets.Characters.FirstPerson
                
                 newCameraPosition = m_Camera.transform.localPosition;
                 newCameraPosition.y = m_Camera.transform.localPosition.y - m_JumpBob.Offset();
-                newCameraPosition.z += 0.5f;
+                if (m_IsWalking)
+                {
+                    newCameraPosition.z += 0.63f;
+                }
+                else
+                {
+                    newCameraPosition.z += 0.87f;
+                }
             }
             else
             {
