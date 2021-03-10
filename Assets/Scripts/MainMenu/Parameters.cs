@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Parameters : MonoBehaviour
 {
@@ -30,9 +32,10 @@ public class Parameters : MonoBehaviour
         _waitingTag = gameObject.tag;
     }
 
-    public void Save()
+    public void Apply()
     {
-
-    }
+        HotkeysManager.Get().Save();
+        SceneManager.LoadScene(0);
+    }   
 
 }
