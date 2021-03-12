@@ -11,6 +11,8 @@ TagManager:
   - HOTKEY_JUMP
   - HOTKEY_SPRINT
   - HOTKEY_INTERACT
+  - AMBIANT_SOUND
+  - SPECIAL_EFFECTS
   layers:
   - Default
   - TransparentFX

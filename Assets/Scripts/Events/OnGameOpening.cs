@@ -16,6 +16,16 @@ namespace Assets.Scripts
         {
             // Load saved hotkeys
             HotkeysManager.Get().Load();
+
+            // Load saved sound preferences
+            AudioManager audioManager = GameObject.FindObjectOfType<AudioManager>();
+            if(audioManager != null)
+            {
+                audioManager.LoadPreferences();
+            } else
+            {
+                Debug.LogWarning("no audio manager found");
+            }
         }
 
     }

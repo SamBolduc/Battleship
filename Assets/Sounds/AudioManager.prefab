@@ -46,6 +46,7 @@ MonoBehaviour:
   mixerGroup: {fileID: 0}
   sounds:
   - name: OceanSound
+    type: AMBIANT_SOUND
     clip: {fileID: 8300000, guid: fa8c333a12bcfdb4a96b2fb2300b6021, type: 3}
     volume: 0.5
     volumeVariance: 0.1

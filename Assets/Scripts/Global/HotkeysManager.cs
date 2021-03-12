@@ -144,7 +144,6 @@ public class HotkeysManager
         Hotkey keyCode = GetHotkey(tag);
         if(keyCode != null)
         {
-            Debug.LogWarning(keyCode.KeyCode.ToString());
             text.text = keyCode.KeyCode.ToString();
         }
         else

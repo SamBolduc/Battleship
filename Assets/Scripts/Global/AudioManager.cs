@@ -1,6 +1,9 @@
 ﻿using UnityEngine.Audio;
 using UnityEngine;
 using System;
+using System.IO;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 public class AudioManager : MonoBehaviour
 {
@@ -10,6 +13,10 @@ public class AudioManager : MonoBehaviour
 	public AudioMixerGroup mixerGroup;
 
 	public Sound[] sounds;
+
+	public static List<AudioPreference> preferences = new List<AudioPreference>();
+
+	private string _filePath = null;
 
 	void Awake()
 	{
@@ -23,6 +30,22 @@ public class AudioManager : MonoBehaviour
 			DontDestroyOnLoad(gameObject);
 		}
 
+		if(preferences.Count <= 0)
+        {
+			preferences.Add(new AudioPreference()
+			{
+				type = "AMBIANT_SOUND",
+				audioLevel = 1
+			});
+			preferences.Add(new AudioPreference()
+			{
+				type = "SPECIAL_EFFECTS",
+				audioLevel = 1
+			});
+		}
+
+		_filePath = Application.dataPath + Path.DirectorySeparatorChar + "sounds.json";
+
 		foreach (Sound s in sounds)
 		{
 			s.source = gameObject.AddComponent<AudioSource>();
@@ -35,7 +58,7 @@ public class AudioManager : MonoBehaviour
 
     void Start()
     {
-		this.Play("OceanSound");
+		Play("OceanSound");
     }
 
     public void Play(string sound)
@@ -51,6 +74,54 @@ public class AudioManager : MonoBehaviour
 		s.source.pitch = s.pitch * (1f + UnityEngine.Random.Range(-s.pitchVariance / 2f, s.pitchVariance / 2f));
 
 		s.source.Play();
+	}
+
+	public void SetVolume(string type, float volume)
+    {
+		preferences.ForEach(pref =>
+		{
+            if (pref.type.Equals(type))
+            {
+				pref.audioLevel = volume;
+            }
+		});
+
+		foreach (Sound s in sounds)
+		{
+			if (s.type.Equals(type))
+            {
+				s.volume = volume;
+				s.source.volume = s.volume * (1f + UnityEngine.Random.Range(-s.volumeVariance / 2f, s.volumeVariance / 2f));
+			}
+		}
+	}
+
+	public void SavePreferences()
+    {
+		if (_filePath != null)
+        {
+			File.WriteAllText(_filePath, JsonConvert.SerializeObject(preferences));
+		}
+	}
+
+	public void LoadPreferences()
+    {
+		if (File.Exists(_filePath))
+		{
+			preferences = JsonConvert.DeserializeObject<List<AudioPreference>>(File.ReadAllText(_filePath));
+
+			preferences.ForEach(pref =>
+			{
+				foreach(Sound sound in sounds)
+                {
+					if(sound.type.Equals(pref.type))
+                    {
+						sound.volume = pref.audioLevel;
+						sound.source.volume = sound.volume;
+                    }
+                }
+			});
+		}
 	}
 
 }

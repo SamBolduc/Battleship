@@ -404,9 +404,10 @@ GameObject:
   m_Component:
   - component: {fileID: 105636957}
   - component: {fileID: 105636958}
+  - component: {fileID: 105636959}
   m_Layer: 5
   m_Name: "Slider - effets sp\xE9ciaux"
-  m_TagString: Untagged
+  m_TagString: SPECIAL_EFFECTS
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -425,12 +426,13 @@ RectTransform:
   - {fileID: 890236565}
   - {fileID: 2067442385}
   - {fileID: 1494909452}
+  - {fileID: 747171687}
   m_Father: {fileID: 1162002621}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -281.23, y: 10.646}
+  m_AnchoredPosition: {x: -281.23, y: 10.645995}
   m_SizeDelta: {x: 499.65576, y: 21.292084}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &105636958
@@ -482,7 +484,30 @@ MonoBehaviour:
   m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 105636959}
+        m_MethodName: OnSoundChange
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &105636959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 105636956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d57a772e493f44409f8d70cfe803ecf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &115124431
 GameObject:
   m_ObjectHideFlags: 0
@@ -493,9 +518,10 @@ GameObject:
   m_Component:
   - component: {fileID: 115124432}
   - component: {fileID: 115124433}
+  - component: {fileID: 115124434}
   m_Layer: 5
   m_Name: Slider - son ambiant
-  m_TagString: Untagged
+  m_TagString: AMBIANT_SOUND
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -514,6 +540,7 @@ RectTransform:
   - {fileID: 374475844}
   - {fileID: 713173393}
   - {fileID: 411164399}
+  - {fileID: 1539821063}
   m_Father: {fileID: 294947678}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -571,7 +598,30 @@ MonoBehaviour:
   m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 115124434}
+        m_MethodName: OnSoundChange
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &115124434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 115124431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d57a772e493f44409f8d70cfe803ecf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &136601909
 GameObject:
   m_ObjectHideFlags: 0
@@ -1456,7 +1506,6 @@ RectTransform:
   m_Children:
   - {fileID: 115124432}
   - {fileID: 47329370}
-  - {fileID: 1539821063}
   m_Father: {fileID: 641463849}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2517,12 +2566,12 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1162002621}
-  m_RootOrder: 1
+  m_Father: {fileID: 105636957}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 31.574, y: 10.646}
+  m_AnchoredPosition: {x: 312.804, y: 0}
   m_SizeDelta: {x: 63.147324, y: 28.876999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &747171688
@@ -3498,7 +3547,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 283714989}
-  - {fileID: 747171687}
   - {fileID: 105636957}
   m_Father: {fileID: 641463849}
   m_RootOrder: 2
@@ -4331,12 +4379,12 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 294947678}
-  m_RootOrder: 2
+  m_Father: {fileID: 115124432}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 28.8, y: 114.8}
+  m_AnchoredPosition: {x: 311.70007, y: -4.490036}
   m_SizeDelta: {x: 65.48787, y: 38.09544}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1539821064
