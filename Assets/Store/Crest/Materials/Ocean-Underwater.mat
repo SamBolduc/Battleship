@@ -137,7 +137,7 @@ Material:
     - _Shadows: 1
     - _ShorelineFoamMinDepth: 0.27
     - _SkyDirectionality: 0.875
-    - _Specular: 1
+    - _Specular: 0.103
     - _StartLevel: 0.157
     - _StencilFunction: 0
     - _SubSurfaceBase: 1.04
