@@ -1,207 +1,90 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Game.Network.Packets;
+using System.Net.Sockets;
+using UnityEngine;
 
-using System;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Collections;
-using System.Collections.Generic;
-
-using DotNetty.Buffers;
-using DotNetty.Handlers.Logging;
-using DotNetty.Transport.Bootstrapping;
-using DotNetty.Transport.Channels;
-using DotNetty.Transport.Channels.Sockets;
-using System.Text;
-
-public class NetworkManager : MonoBehaviour
+public class NetworkManager
 {
-    public static NetworkManager Instance;
 
-    Thread _networkClientThread;
+    public static NetworkManager Instance = new NetworkManager();
+    private TcpClient client;
+    private bool isHead;
+    private int len;
+    public static PacketHandler PacketHandler = new PacketHandler();
 
-    public static Bootstrap TcpBootstrap;
-
-    static IChannel _tcpChannel;
-
-    static readonly PooledByteBufferAllocator _alloc = PooledByteBufferAllocator.Default;
-
-    static IPEndPoint _serverAddress_TCP;
-
-    public static object Locking = new object();
-
-    public static Queue<PacketData> PacketQueue;
-
-    void Awake()
+    public void Init()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else if (Instance != this)
-        {
-            Destroy(gameObject);
-        }
-        DontDestroyOnLoad(gameObject);
-
-        PacketQueue = new Queue<PacketData>();
+        client = new TcpClient();
+        client.Connect("188.40.72.202", 8989);
+        isHead = true;
     }
 
-    void Start()
+    public void Send(byte[] msg)
     {
-        _networkClientThread = new Thread(Unity_DotNettyClient);
-        _networkClientThread.Start();
+        byte[] data = new byte[4 + msg.Length];
+        IntToBytes(msg.Length).CopyTo(data, 0);
+        msg.CopyTo(data, 4);
+        client.GetStream().Write(data, 0, data.Length);
     }
-
-    void OnEnable()
+    
+    public void ReceiveMsg()
     {
-        StartCoroutine(PacketReceiveEvent());
-    }
-
-    void OnDisable()
-    {
-        StopCoroutine(PacketReceiveEvent());
-    }
-
-    IEnumerator PacketReceiveEvent()
-    {
-        Debug.Log("Loading PacketReceiveEvent()");
-        WaitForSecondsRealtime receptionRate = new WaitForSecondsRealtime(0.005f);
-        PacketData packet = null;
-
-        while (true)
-        {
-            lock (Locking)
-            {
-                if (PacketQueue.Count > 0)
-                {
-                    packet = PacketQueue.Dequeue();
-                }
-            }
-
-            if (packet != null)
-            {
-                byte[] data = packet.data;
-
-                Debug.LogWarning("[MESSAGE] " + Encoding.UTF8.GetString(data));
-
-                data = null;
-            }
-            yield return receptionRate;
-        }
-    }
-
-
-    public async static void ConnectGameServer(string TYPE, string IP_OR_DOMAIN_VALUE, int PORT)
-    {
-        try
-        {
-            if (TYPE.Equals("ip"))
-            {
-                _serverAddress_TCP = new IPEndPoint(IPAddress.Parse(IP_OR_DOMAIN_VALUE), PORT);
-            }
-            else if (TYPE.Equals("domain"))
-            {
-                _serverAddress_TCP = new IPEndPoint(Dns.GetHostEntry(IP_OR_DOMAIN_VALUE).AddressList[0], PORT);
-            }
-            else
-            {
-                Debug.Log("Error: ConnectGameServer()");
-                return;
-            }
-
-            _tcpChannel = await TcpBootstrap.ConnectAsync(_serverAddress_TCP);
-        }
-        catch (Exception e)
-        {
-            Debug.Log("Error: " + e.ToString());
-        }
-    }
-
-
-    // TCP
-    public static void SendByte(byte[] send_data)
-    {
-        if (_tcpChannel == null || _tcpChannel.Active != true || _tcpChannel.IsWritable != true)
+        NetworkStream stream = client.GetStream();
+        if (!stream.CanRead)
         {
             return;
         }
-
-        try
+        if (isHead)
         {
-            IByteBuffer data = _alloc.DirectBuffer(send_data.Length);
-            
-            data.WriteBytes(send_data);
-
-            _tcpChannel.WriteAndFlushAsync(data);
-        }
-        catch (Exception e)
-        {
-            Debug.Log("SendByte() Error:" + e.ToString());
-        }
-    }
-
-    void Unity_DotNettyClient()
-    {
-        Debug.Log("NetworkManager:Init...");
-
-        IEventLoopGroup TCPWorkGroup;
-
-        TCPWorkGroup = new MultithreadEventLoopGroup(1);
-
-        TcpBootstrap = new Bootstrap();
-
-        try
-        {
-            TcpBootstrap
-            .Group(TCPWorkGroup) 
-
-            .Channel<TcpSocketChannel>()  
-
-            .Option(ChannelOption.Allocator, PooledByteBufferAllocator.Default) 
-
-            .Option(ChannelOption.TcpNodelay, true)
-
-            .Handler(new LoggingHandler())
-
-            .Handler(new ActionChannelInitializer<TcpSocketChannel>(channel =>
+            if (client.Available < 4)
             {
-                IChannelPipeline pipeline = channel.Pipeline;
-                //pipeline.AddLast("ByteSizeFilterHandler", new ByteSizeFilterHandler());
-                pipeline.AddLast("TCP_InBoundHandler", new TCPHandler());
-            }));
-
-            Debug.Log("NetworkManager:DotNetty TCP_Init...Complete");
-
-
-            Debug.Log("NetworkManager:DotNetty Initialize Complete");
-
-            Thread.CurrentThread.Join();
+                return;
+            }
+            byte[] lenByte = new byte[4];
+            stream.Read(lenByte, 0, 4);
+            len = BytesToInt(lenByte, 0);
+            isHead = false;
         }
-        catch (Exception e)
+        if (!isHead)
         {
-            Debug.Log(e);
+            if (client.Available < len)
+            {
+                return;
+            }
+            byte[] msgByte = new byte[len];
+            stream.Read(msgByte, 0, len);
+            isHead = true;
+            len = 0;
+            if (onReception != null)
+            {
+                onReception(msgByte);
+            }
         }
-        finally
-        {
-            TCPWorkGroup.ShutdownGracefullyAsync(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1));
 
-            Debug.Log("NetworkManager:DotNetty ShutdownGracefully Complete.");
-        }
-    } 
-
-}
-
-
-
-public class PacketData
-{
-    public byte[] data;
-
-    public PacketData() { }
-
-    public PacketData(byte[] data)
-    {
-        this.data = data;
     }
+
+    public static int BytesToInt(byte[] data, int offset)
+    {
+        int num = 0;
+        for (int i = offset; i < offset + 4; i++)
+        {
+            num <<= 8;
+            num |= (data[i] & 0xff);
+        }
+        return num;
+    }
+    
+    public static byte[] IntToBytes(int num)
+    {
+        byte[] bytes = new byte[4];
+        for (int i = 0; i < 4; i++)
+        {
+            bytes[i] = (byte)(num >> (24 - i * 8));
+        }
+        return bytes;
+    }
+
+    public delegate void OnRevMsg(byte[] msg);
+
+    public OnRevMsg onReception;
+
 }
