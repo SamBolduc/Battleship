@@ -40,5 +40,4 @@ public class Game : MonoBehaviour
         Debug.LogWarning("[MESSAGE] " + Encoding.UTF8.GetString(data));
     }
 
-
 }

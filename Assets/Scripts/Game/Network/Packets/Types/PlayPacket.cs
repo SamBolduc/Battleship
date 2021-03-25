@@ -20,6 +20,12 @@ namespace Assets.Scripts.Game.Network.Packets.Types
 
         public override void Read(MonoBehaviour game)
         {
+            // Do something...
+            OverlayManager manager = UnityEngine.Object.FindObjectOfType<OverlayManager>();
+            if(manager != null)
+            {
+                manager.DisplayText("PlayPacket", Username, 5);
+            }
             Debug.LogWarning(Username);
         }
     }
