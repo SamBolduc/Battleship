@@ -121,7 +121,15 @@ namespace UnityStandardAssets.Characters.FirstPerson
             {
                 animator.SetFloat("Speed_f", 0);
             }
-            
+
+            if (m_Jumping)
+            {
+                animator.SetBool("Jump_b", true);
+            } else
+            {
+                animator.SetBool("Jump_b", false);
+            }
+
             if (m_CharacterController.isGrounded)
             {
                 animator.SetBool("Grounded", true);
@@ -129,14 +137,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
                 if (m_Jump)
                 {
-                    animator.SetBool("Jump_b", true);
                     m_MoveDir.y = m_JumpSpeed;
                     PlayJumpSound();
                     m_Jump = false;
                     m_Jumping = true;
-                } else
-                {
-                    animator.SetBool("Jump_b", false);
                 }
             }
             else

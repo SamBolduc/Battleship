@@ -13,6 +13,7 @@ TagManager:
   - HOTKEY_INTERACT
   - AMBIANT_SOUND
   - SPECIAL_EFFECTS
+  - TABLET
   layers:
   - Default
   - TransparentFX
