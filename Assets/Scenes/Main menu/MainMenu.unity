@@ -2465,6 +2465,7 @@ GameObject:
   - component: {fileID: 1769137881}
   - component: {fileID: 1769137880}
   - component: {fileID: 1769137879}
+  - component: {fileID: 1769137883}
   m_Layer: 5
   m_Name: Find game button
   m_TagString: Untagged
@@ -2551,12 +2552,12 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: 
+      - m_Target: {fileID: 1769137883}
+        m_MethodName: FindGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2599,6 +2600,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1769137877}
   m_CullTransparentMesh: 0
+--- !u!114 &1769137883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1769137877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ef271f59238ebc48ac7d7150738477e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1794241181
 GameObject:
   m_ObjectHideFlags: 0

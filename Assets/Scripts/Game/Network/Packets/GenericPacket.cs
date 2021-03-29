@@ -20,7 +20,7 @@ namespace Assets.Scripts.Game.Network.Packets
             Id = id;
         }
 
-        public abstract void Read(MonoBehaviour game);
+        public abstract void Read(Game game);
         
         public void Send()
         {
