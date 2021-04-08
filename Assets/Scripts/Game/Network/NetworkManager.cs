@@ -13,6 +13,7 @@ public class NetworkManager
 
     public void Init()
     {
+        Debug.Log("test");
         client = new TcpClient();
         client.Connect("188.40.72.202", 8989);
         isHead = true;
