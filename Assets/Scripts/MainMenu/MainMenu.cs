@@ -1,10 +1,17 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Game.Network.Packets.Types;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+
+    private void Start()
+    {
+        NetworkManager.Instance.Init();
+    }
+
     public void QuitGame()
     {
         Application.Quit();
@@ -22,7 +29,9 @@ public class MainMenu : MonoBehaviour
 
     public void FindGame()
     {
-        SceneManager.LoadScene(3);
+        new PlayPacket()
+        {
+            Username = "Player" + Random.Range(1000, 9999)
+        }.Send();
     }
-
 }

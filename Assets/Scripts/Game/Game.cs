@@ -7,37 +7,34 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-public class Game : MonoBehaviour
+namespace Assets.Scripts.Game
 {
-
-    void Start()
+    public class Game : MonoBehaviour
     {
-        NetworkManager.Instance.Init();
-        NetworkManager.Instance.onReception = NetworkReceptionEvent;
+        public string Username { get; set; }
+        public GameState State { get; set; }
 
-        new PlayPacket()
+        void Start()
         {
-            Username = "coulis"
-        }.Send();
+            this.State = GameState.NONE;
+
+            NetworkManager.Instance.onReception = NetworkReceptionEvent;
+        }
+
+        void Update()
+        {
+            NetworkManager.Instance.ReceiveMsg();
+        }
+
+        void NetworkReceptionEvent(byte[] data)
+        {
+            string msg = Encoding.UTF8.GetString(data);
+            JsonMessage jsonMsg = JsonConvert.DeserializeObject<JsonMessage>(msg);
+
+            Type packetType = NetworkManager.PacketHandler.GetType(jsonMsg.PacketId);
+            GenericPacket packet = (GenericPacket)JsonConvert.DeserializeObject(jsonMsg.Content, packetType);
+
+            packet.Read(this);
+        }
     }
-
-    
-    void Update()
-    {
-        NetworkManager.Instance.ReceiveMsg();
-    }
-
-    void NetworkReceptionEvent(byte[] data)
-    {
-        string msg = Encoding.UTF8.GetString(data);
-        JsonMessage jsonMsg = JsonConvert.DeserializeObject<JsonMessage>(msg);
-
-        Type packetType = NetworkManager.PacketHandler.GetType(jsonMsg.PacketId);
-        GenericPacket packet = (GenericPacket)JsonConvert.DeserializeObject(jsonMsg.Content, packetType);
-
-        packet.Read(this);
-        
-        Debug.LogWarning("[MESSAGE] " + Encoding.UTF8.GetString(data));
-    }
-
 }

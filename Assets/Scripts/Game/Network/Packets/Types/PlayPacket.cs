@@ -1,10 +1,6 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+using Assets.Scripts.Game;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Game.Network.Packets.Types
 {
@@ -18,15 +14,16 @@ namespace Assets.Scripts.Game.Network.Packets.Types
         {
         }
 
-        public override void Read(MonoBehaviour game)
+        public override void Read(Game game)
         {
             // Do something...
             OverlayManager manager = UnityEngine.Object.FindObjectOfType<OverlayManager>();
-            if(manager != null)
-            {
-                manager.DisplayText("PlayPacket", Username, 5);
-            }
-            Debug.LogWarning(Username);
+            if (manager == null) return;
+
+            game.Username = Username;
+
+            SceneManager.LoadScene(3);
+            manager.DisplayText("En attente d'un adversaire...", "", 5);
         }
     }
 }

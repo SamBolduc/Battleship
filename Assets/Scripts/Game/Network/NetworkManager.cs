@@ -4,19 +4,29 @@ using UnityEngine;
 
 public class NetworkManager
 {
-
     public static NetworkManager Instance = new NetworkManager();
     private TcpClient client;
     private bool isHead;
     private int len;
     public static PacketHandler PacketHandler = new PacketHandler();
 
+    private static bool _initialized;
     public void Init()
     {
+<<<<<<< HEAD
         Debug.Log("test");
         client = new TcpClient();
         client.Connect("188.40.72.202", 8989);
         isHead = true;
+=======
+        if (_initialized) return;
+        _initialized = true;
+
+        this.client = new TcpClient();
+        //client.Connect("188.40.72.202", 8989);
+        this.client.Connect("127.0.0.1", 8989);
+        this.isHead = true;
+>>>>>>> 26fd1f800767dba0cbcdd3cb92698f0c41c485a1
     }
 
     public void Send(byte[] msg)
