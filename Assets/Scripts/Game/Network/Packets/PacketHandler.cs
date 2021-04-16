@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Assets.Scripts.Game.Network.Packets
 {
@@ -15,8 +16,9 @@ namespace Assets.Scripts.Game.Network.Packets
         public PacketHandler()
         {
             RegisterPacket<PlayPacket>(1);
-            RegisterPacket<PreparePacket>(2);
-            RegisterPacket<AttackPacket>(5);
+            RegisterPacket<OpponentFoundPacket>(2);
+            RegisterPacket<BoatPositionsPacket>(3);
+            RegisterPacket<GameStartPacket>(4);
         }
 
         public Type GetType(int packetId)
@@ -38,7 +40,7 @@ namespace Assets.Scripts.Game.Network.Packets
                 _packets.Add(packet);
             } catch(Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.LogWarning(e.Message);
             }
         }
         

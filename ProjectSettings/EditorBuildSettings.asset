@@ -17,4 +17,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/InteriorScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/BoatPositions.unity
+    guid: 66a4340447d11974f8c7db1e4e3e62de
+  - enabled: 1
+    path: Assets/Scenes/WaitingForOpponent.unity
+    guid: bcfc8113c6489b645b36be4ce5bf23cb
+  - enabled: 1
+    path: Assets/Scenes/WaitingForOtherBord.unity
+    guid: 62491ea7cdeeb0547aac10ec98e43918
   m_configObjects: {}

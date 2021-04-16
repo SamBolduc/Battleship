@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Game.Network.Packets.Types
 {
-    class PlayPacket : GenericPacket
+    public class PlayPacket : GenericPacket
     {
 
         [JsonProperty("username")]
@@ -14,16 +14,8 @@ namespace Assets.Scripts.Game.Network.Packets.Types
         {
         }
 
-        public override void Read(Game game)
+        public override void Read()
         {
-            // Do something...
-            OverlayManager manager = UnityEngine.Object.FindObjectOfType<OverlayManager>();
-            if (manager == null) return;
-
-            game.Username = Username;
-
-            SceneManager.LoadScene(3);
-            manager.DisplayText("En attente d'un adversaire...", "", 5);
         }
     }
 }

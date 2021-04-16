@@ -1,6 +1,10 @@
-﻿using Assets.Scripts.Game.Network.Packets.Types;
+﻿using Assets.Scripts.Game.Network.Packets;
+using Assets.Scripts.Game.Network.Packets.Types;
+using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,7 +13,6 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
-        NetworkManager.Instance.Init();
     }
 
     public void QuitGame()
@@ -31,7 +34,8 @@ public class MainMenu : MonoBehaviour
     {
         new PlayPacket()
         {
-            Username = "Player" + Random.Range(1000, 9999)
+            Username = "Player" + UnityEngine.Random.Range(1000, 9999)
         }.Send();
+        SceneManager.LoadScene(5);
     }
 }

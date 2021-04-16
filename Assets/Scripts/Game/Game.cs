@@ -11,30 +11,32 @@ namespace Assets.Scripts.Game
 {
     public class Game : MonoBehaviour
     {
+
+        public Canvas attackPanel;
+
         public string Username { get; set; }
-        public GameState State { get; set; }
+        public static bool turn { get; set; }
 
         void Start()
         {
-            this.State = GameState.NONE;
-
-            NetworkManager.Instance.onReception = NetworkReceptionEvent;
+            attackPanel.gameObject.SetActive(false);
+            OverlayManager overlay = GameObject.FindObjectOfType<OverlayManager>();
+            if (turn)
+            {
+                overlay.DisplayText("À l'attaque!", "C'est à votre tour. Cliquez sur E pour attaquer", 10);
+            }
+            else
+            {
+                overlay.DisplayText("Attendez!", "L'ennemi vous envoie une attaque...", 10);
+            }
         }
 
         void Update()
         {
-            NetworkManager.Instance.ReceiveMsg();
-        }
-
-        void NetworkReceptionEvent(byte[] data)
-        {
-            string msg = Encoding.UTF8.GetString(data);
-            JsonMessage jsonMsg = JsonConvert.DeserializeObject<JsonMessage>(msg);
-
-            Type packetType = NetworkManager.PacketHandler.GetType(jsonMsg.PacketId);
-            GenericPacket packet = (GenericPacket)JsonConvert.DeserializeObject(jsonMsg.Content, packetType);
-
-            packet.Read(this);
+            if(turn && Input.GetKeyDown(KeyCode.E))
+            {
+                attackPanel.gameObject.SetActive(true);
+            }
         }
     }
 }

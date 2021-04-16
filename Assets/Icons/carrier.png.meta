@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 67299049848b4134da49520436dfee50
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -6269947495047664799
+    second: carrier_0
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -109,11 +112,32 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: carrier_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 358
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 16b655d09fbacf8a0800000000000000
+      internalID: -6269947495047664799
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: dfedb2ab7c376864282005d3494fbec0
     internalID: 0
     vertices: []
     indices: 
