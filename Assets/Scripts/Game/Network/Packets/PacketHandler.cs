@@ -21,6 +21,8 @@ namespace Assets.Scripts.Game.Network.Packets
             RegisterPacket<GameStartPacket>(4);
             RegisterPacket<PlayerWinPacket>(5);
             RegisterPacket<PlayerLeftPacket>(6);
+            RegisterPacket<AttackPacket>(7);
+
         }
 
         public Type GetType(int packetId)
