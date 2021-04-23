@@ -26,4 +26,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/WaitingForOtherBord.unity
     guid: 62491ea7cdeeb0547aac10ec98e43918
+  - enabled: 1
+    path: Assets/Scenes/PlayerLeft.unity
+    guid: f9edbf3929675284da7851fbb2baa8de
+  - enabled: 1
+    path: Assets/Scenes/PlayerWin.unity
+    guid: 6d24964575f6a2143899b1d79a1cee69
   m_configObjects: {}

@@ -38,4 +38,10 @@ public class MainMenu : MonoBehaviour
         }.Send();
         SceneManager.LoadScene(5);
     }
+
+    public void GoToMainMenu()
+    {
+        new PlayerLeftPacket().Send();
+        SceneManager.LoadScene(0);
+    }
 }

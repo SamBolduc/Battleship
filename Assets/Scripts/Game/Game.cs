@@ -13,13 +13,14 @@ namespace Assets.Scripts.Game
     {
 
         public Canvas attackPanel;
+        public Canvas escMenu;
 
         public string Username { get; set; }
         public static bool turn { get; set; }
 
         void Start()
         {
-            attackPanel.gameObject.SetActive(false);
+            HideAll();
             OverlayManager overlay = GameObject.FindObjectOfType<OverlayManager>();
             if (turn)
             {
@@ -35,8 +36,21 @@ namespace Assets.Scripts.Game
         {
             if(turn && Input.GetKeyDown(KeyCode.E))
             {
-                attackPanel.gameObject.SetActive(true);
+                Cursor.lockState = !attackPanel.gameObject.activeSelf ? CursorLockMode.None : CursorLockMode.Confined;
+                attackPanel.gameObject.SetActive(!attackPanel.gameObject.activeSelf);
             }
+
+            if(Input.GetKeyDown(KeyCode.Escape))
+            {
+                Cursor.lockState = !escMenu.gameObject.activeSelf ? CursorLockMode.None : CursorLockMode.Confined;
+                escMenu.gameObject.SetActive(!escMenu.gameObject.activeSelf);
+            }
+        }
+
+        void HideAll()
+        {
+            attackPanel.gameObject.SetActive(false);
+            escMenu.gameObject.SetActive(false);
         }
     }
 }
