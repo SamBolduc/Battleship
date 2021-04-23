@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Game;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,8 +17,10 @@ public class GameActions : MonoBehaviour
     public void ShowParameters()
     {
         escMenu.gameObject.SetActive(false);
-        Cursor.lockState = !parameters.gameObject.activeSelf ? CursorLockMode.None : CursorLockMode.Confined;
         parameters.gameObject.SetActive(!parameters.gameObject.activeSelf);
+        Game.inParameters = true;
+        Game.SetCursorLock(false);
+
     }
 
     public void SaveParameters()
@@ -29,8 +32,9 @@ public class GameActions : MonoBehaviour
             audioManager.SavePreferences();
         }
 
-        Cursor.lockState = CursorLockMode.Confined;
         parameters.gameObject.SetActive(false);
+        Game.inParameters = false;
+        Game.SetCursorLock(true);
     }
 
 }

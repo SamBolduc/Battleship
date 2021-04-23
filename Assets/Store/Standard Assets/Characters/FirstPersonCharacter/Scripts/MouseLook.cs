@@ -1,3 +1,4 @@
+using Assets.Scripts.Game;
 using System;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
@@ -42,7 +43,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 m_CameraTargetRot = ClampRotationAroundXAxis (m_CameraTargetRot);
 
             float horizontalAngle = m_CharacterTargetRot.eulerAngles.y;
-            animator.SetFloat("Head_Horizontal_f", (float)mapOneRangeToAnother(horizontalAngle, 240, 300, -1, 1, 2));
+            //animator.SetFloat("Head_Horizontal_f", (float)mapOneRangeToAnother(horizontalAngle, 240, 300, -1, 1, 2));
 
             if (smooth)
             {
@@ -69,7 +70,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 }
             }
 
-            UpdateCursorLock();
+            if (!Game.inMenu)
+            {
+                UpdateCursorLock();
+            }
         }
 
         private double mapOneRangeToAnother(double sourceNumber, double fromA, double fromB, double toA, double toB, int decimalPrecision)

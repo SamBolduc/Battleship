@@ -17,6 +17,10 @@ namespace Assets.Scripts.Game
 
         public string Username { get; set; }
         public static bool turn { get; set; }
+        public static bool lockCursor = true;
+
+        public static bool inMenu = false;
+        public static bool inParameters = false;
 
         void Start()
         {
@@ -36,16 +40,48 @@ namespace Assets.Scripts.Game
         {
             if(turn && Input.GetKeyDown(KeyCode.E))
             {
-                Cursor.lockState = !attackPanel.gameObject.activeSelf ? CursorLockMode.None : CursorLockMode.Confined;
                 attackPanel.gameObject.SetActive(!attackPanel.gameObject.activeSelf);
+                Game.SetCursorLock(!attackPanel.gameObject.activeSelf);
             }
 
-            if(Input.GetKeyDown(KeyCode.Escape))
+            if(Input.GetKeyDown(KeyCode.Escape) && !inParameters)
             {
-                Cursor.lockState = !escMenu.gameObject.activeSelf ? CursorLockMode.None : CursorLockMode.Confined;
                 escMenu.gameObject.SetActive(!escMenu.gameObject.activeSelf);
+                Game.SetCursorLock(!escMenu.gameObject.activeSelf);
+            }
+
+
+            if (Input.GetKeyDown(KeyCode.Mouse0) && !inMenu)
+            {
+                Vector2 mouse = Input.mousePosition;
+
+                RectTransform rect = attackPanel.GetComponent<RectTransform>();
+
+                Vector2 anchorPos;
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(rect, mouse, null, out anchorPos);
+
+                Debug.LogWarning("X : " + anchorPos.x + " Y : " + anchorPos.y);
             }
         }
+
+
+        public static void SetCursorLock(bool value)
+        {
+            lockCursor = value;
+            if (!lockCursor)
+            {//we force unlock the cursor if the user disable the cursor locking helper
+                Cursor.lockState = CursorLockMode.None;
+
+                Cursor.visible = true;
+                Game.inMenu = true;
+            } else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+                Game.inMenu = false;
+            }
+        }
+
 
         void HideAll()
         {
