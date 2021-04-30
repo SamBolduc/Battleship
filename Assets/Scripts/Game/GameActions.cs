@@ -6,21 +6,10 @@ using UnityEngine;
 public class GameActions : MonoBehaviour
 {
 
-    public Canvas escMenu;
-    public Canvas parameters;
-
-    private void Start()
-    {
-        parameters.gameObject.SetActive(false);
-    }
-
     public void ShowParameters()
     {
-        escMenu.gameObject.SetActive(false);
-        parameters.gameObject.SetActive(!parameters.gameObject.activeSelf);
-        Game.inParameters = true;
+        Game.ShowMenu(Game.CanvasType.PARAMETERS);
         Game.SetCursorLock(false);
-
     }
 
     public void SaveParameters()
@@ -32,9 +21,6 @@ public class GameActions : MonoBehaviour
             audioManager.SavePreferences();
         }
 
-        parameters.gameObject.SetActive(false);
-        Game.inParameters = false;
-        Game.SetCursorLock(true);
+        Game.ShowMenu(Game.CanvasType.ESC);
     }
-
 }

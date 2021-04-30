@@ -12,18 +12,22 @@ namespace Assets.Scripts.Game
     public class Game : MonoBehaviour
     {
 
-        public Canvas attackPanel;
+        public Canvas attackMenu;
         public Canvas escMenu;
+        public Canvas parametersMenu;
+
+        public static Dictionary<CanvasType, Canvas> canvases = new Dictionary<CanvasType, Canvas>();
 
         public string Username { get; set; }
         public static bool turn { get; set; }
         public static bool lockCursor = true;
 
-        public static bool inMenu = false;
-        public static bool inParameters = false;
-
         void Start()
         {
+            canvases.Add(CanvasType.ESC, escMenu);
+            canvases.Add(CanvasType.ATTACK, attackMenu);
+            canvases.Add(CanvasType.PARAMETERS, parametersMenu);
+
             HideAll();
             OverlayManager overlay = GameObject.FindObjectOfType<OverlayManager>();
             if (turn)
@@ -34,36 +38,96 @@ namespace Assets.Scripts.Game
             {
                 overlay.DisplayText("Attendez!", "L'ennemi vous envoie une attaque...", 10);
             }
+
         }
 
         void Update()
         {
-            if(turn && Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E))
             {
-                attackPanel.gameObject.SetActive(!attackPanel.gameObject.activeSelf);
-                Game.SetCursorLock(!attackPanel.gameObject.activeSelf);
+                if (turn && !IsActive(CanvasType.ATTACK))
+                {
+                    ShowMenu(CanvasType.ATTACK);
+                }
             }
 
-            if(Input.GetKeyDown(KeyCode.Escape) && !inParameters)
+            if(Input.GetKeyDown(KeyCode.Escape))
             {
-                escMenu.gameObject.SetActive(!escMenu.gameObject.activeSelf);
-                Game.SetCursorLock(!escMenu.gameObject.activeSelf);
+                if (IsActive(CanvasType.ESC))
+                {
+                    ShowMenu(CanvasType.NONE);
+                }
+                else
+                {
+                    ShowMenu(CanvasType.ESC);
+                }
             }
 
-
-            if (Input.GetKeyDown(KeyCode.Mouse0) && !inMenu)
+            if (Input.GetKeyDown(KeyCode.Mouse0) && IsActive(CanvasType.ATTACK))
             {
                 Vector2 mouse = Input.mousePosition;
 
-                RectTransform rect = attackPanel.GetComponent<RectTransform>();
+                RectTransform rect = attackMenu.GetComponent<RectTransform>();
 
                 Vector2 anchorPos;
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(rect, mouse, null, out anchorPos);
 
                 Debug.LogWarning("X : " + anchorPos.x + " Y : " + anchorPos.y);
+
+                new AttackPacket()
+                {
+                 x = anchorPos.x,
+                 y = anchorPos.y
+                }.Send();
+
             }
         }
 
+        private static Canvas prevCanvas;
+
+        public static void ShowMenu(CanvasType type)
+        {
+            if (prevCanvas != null)
+            {
+                prevCanvas.gameObject.SetActive(false);
+            }
+
+            Canvas canvas; 
+            canvases.TryGetValue(type, out canvas);
+
+            if (canvas == null || type == CanvasType.NONE)
+            {
+                prevCanvas = null;
+                foreach(KeyValuePair<CanvasType, Canvas> c in canvases)
+                {
+                    
+                    c.Value.gameObject.SetActive(false);
+                    Debug.LogWarning($"Key {c.Key} ValueActive: {c.Value.gameObject.activeSelf}");
+                }
+                SetCursorLock(true);
+                return;
+            }
+
+            prevCanvas = canvas;
+            canvas.gameObject.SetActive(true);
+            SetCursorLock(false);
+        }
+
+        public static bool IsActive(CanvasType type)
+        {
+            Canvas canvas;
+            canvases.TryGetValue(type, out canvas);
+
+            return canvas != null && canvas.gameObject.activeSelf;
+        }
+
+        public static Canvas getByType(CanvasType type)
+        {
+            Canvas canvas;
+            canvases.TryGetValue(type, out canvas);
+
+            return canvas;
+        }
 
         public static void SetCursorLock(bool value)
         {
@@ -73,20 +137,28 @@ namespace Assets.Scripts.Game
                 Cursor.lockState = CursorLockMode.None;
 
                 Cursor.visible = true;
-                Game.inMenu = true;
             } else
             {
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
-                Game.inMenu = false;
             }
         }
 
 
         void HideAll()
         {
-            attackPanel.gameObject.SetActive(false);
-            escMenu.gameObject.SetActive(false);
+            ShowMenu(CanvasType.NONE);
+        }
+
+        public enum CanvasType
+        {
+            PARAMETERS,
+            ATTACK,
+            ESC,
+            NONE
+
+
+
         }
     }
 }

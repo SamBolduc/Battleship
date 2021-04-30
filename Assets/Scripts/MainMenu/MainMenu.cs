@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Game.Network.Packets;
+﻿using Assets.Scripts.Game;
+using Assets.Scripts.Game.Network.Packets;
 using Assets.Scripts.Game.Network.Packets.Types;
 using Newtonsoft.Json;
 using System;
@@ -13,6 +14,7 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
+        Game.SetCursorLock(false);
     }
 
     public void QuitGame()

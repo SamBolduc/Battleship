@@ -70,10 +70,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 }
             }
 
-            if (!Game.inMenu)
-            {
+            //if (Game.IsActive(Game.CanvasType.NONE))
+            //{
                 UpdateCursorLock();
-            }
+            //}
         }
 
         private double mapOneRangeToAnother(double sourceNumber, double fromA, double fromB, double toA, double toB, int decimalPrecision)
