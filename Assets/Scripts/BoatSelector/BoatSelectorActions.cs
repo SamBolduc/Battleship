@@ -23,7 +23,7 @@ namespace Assets.Scripts.BoatSelector
             BoatSelectorManager.Board = board;
             new BoatPositionsPacket()
             {
-                Board = board
+                board = board
             }.Send();
             SceneManager.LoadScene(6);
         }

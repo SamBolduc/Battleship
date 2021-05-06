@@ -7,17 +7,18 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Game.Network.Packets.Types
 {
-    public class BoatPositionsPacket : GenericPacket
+    public class BoatStatusPacket : GenericPacket
     {
+        public List<Boat> myBoats { get; }
+        public List<Boat> enemyBoats { get; }
 
-        public Board board { get; set; }
-
-        public BoatPositionsPacket() : base(3)
+        public BoatStatusPacket() : base(8)
         {
         }
 
         public override void Read()
         {
+            Game.UpdateBoats(this);
         }
     }
 }

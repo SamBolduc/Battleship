@@ -222,11 +222,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 newCameraPosition.y = m_Camera.transform.localPosition.y - m_JumpBob.Offset();
                 if (m_IsWalking)
                 {
-                    newCameraPosition.z += 0.63f;
+                    newCameraPosition.z += 0.67f;
                 }
                 else
                 {
-                    newCameraPosition.z += 0.87f;
+                    newCameraPosition.z += 0.73f;
                 }
             }
             else

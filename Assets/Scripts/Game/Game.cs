@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using Random = System.Random;
 
 namespace Assets.Scripts.Game
 {
@@ -19,15 +20,37 @@ namespace Assets.Scripts.Game
 
         public static Dictionary<CanvasType, Canvas> canvases = new Dictionary<CanvasType, Canvas>();
 
+        public static List<Boat> MyBoats = new List<Boat>();
+        public static List<Boat> EnemyBoats = new List<Boat>();
+
+        public static List<AttackLog> AttackLogs = new List<AttackLog>();
+
         public string Username { get; set; }
         public static bool turn { get; set; }
         public static bool lockCursor = true;
+
+        public static void UpdateBoats(BoatStatusPacket packet)
+        {
+            MyBoats = packet.myBoats;
+            EnemyBoats = packet.enemyBoats;
+
+            //TODO: Update UI
+        }
 
         void Start()
         {
             canvases.Add(CanvasType.ESC, escMenu);
             canvases.Add(CanvasType.ATTACK, attackMenu);
             canvases.Add(CanvasType.PARAMETERS, parametersMenu);
+
+            for (int i = 0; i < 25; i++)
+            {
+                AttackLog log = new AttackLog();
+                log.x = new Random().Next(-50, 50);
+                log.y = new Random().Next(-50, 50);
+                log.DamageDealt = new Random().Next(50);
+                AttackLogs.Add(log);
+            }
 
             HideAll();
             OverlayManager overlay = GameObject.FindObjectOfType<OverlayManager>();
@@ -39,7 +62,6 @@ namespace Assets.Scripts.Game
             {
                 overlay.DisplayText("Attendez!", "L'ennemi vous envoie une attaque...", 10);
             }
-
         }
 
         void OnApplicationQuit()
@@ -69,24 +91,25 @@ namespace Assets.Scripts.Game
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.Mouse0) && IsActive(CanvasType.ATTACK))
+            if (IsActive(CanvasType.ATTACK))
             {
-                Vector2 mouse = Input.mousePosition;
-
-                RectTransform rect = attackMenu.GetComponent<RectTransform>();
-
-                Vector2 anchorPos;
-                RectTransformUtility.ScreenPointToLocalPointInRectangle(rect, mouse, null, out anchorPos);
-
-                Debug.LogWarning("X : " + anchorPos.x + " Y : " + anchorPos.y);
-
-                new AttackPacket()
+                if (Input.GetKeyDown(KeyCode.Mouse0))
                 {
-                 x = anchorPos.x,
-                 y = anchorPos.y
-                }.Send();
+                    Vector2 mouse = Input.mousePosition;
 
+                    RectTransform rect = attackMenu.GetComponent<RectTransform>();
+
+                    Vector2 anchorPos;
+                    RectTransformUtility.ScreenPointToLocalPointInRectangle(rect, mouse, null, out anchorPos);
+
+                    new AttackPacket()
+                    {
+                        x = anchorPos.x,
+                        y = anchorPos.y
+                    }.Send();
+                }
             }
+
         }
 
         private static Canvas prevCanvas;

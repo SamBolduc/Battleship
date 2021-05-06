@@ -8,7 +8,6 @@ namespace Assets.Scripts.BoatSelector
 {
     public class Board
     {
-
         public List<BoatPosition> boats { get; set; }
 
         public Board()

@@ -22,6 +22,7 @@ namespace Assets.Scripts.Game.Network.Packets
             RegisterPacket<PlayerWinPacket>(5);
             RegisterPacket<PlayerLeftPacket>(6);
             RegisterPacket<AttackPacket>(7);
+            RegisterPacket<BoatStatusPacket>(8);
 
         }
 
