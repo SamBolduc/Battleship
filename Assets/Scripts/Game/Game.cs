@@ -9,7 +9,8 @@ using UnityEngine;
 
 namespace Assets.Scripts.Game
 {
-    public class Game : MonoBehaviour
+    public class 
+        Game : MonoBehaviour
     {
 
         public Canvas attackMenu;
@@ -39,6 +40,11 @@ namespace Assets.Scripts.Game
                 overlay.DisplayText("Attendez!", "L'ennemi vous envoie une attaque...", 10);
             }
 
+        }
+
+        void OnApplicationQuit()
+        {
+            NetworkManager.Instance.Disconnect();
         }
 
         void Update()
@@ -92,21 +98,21 @@ namespace Assets.Scripts.Game
                 prevCanvas.gameObject.SetActive(false);
             }
 
-            Canvas canvas; 
-            canvases.TryGetValue(type, out canvas);
-
-            if (canvas == null || type == CanvasType.NONE)
+            if (type == CanvasType.NONE)
             {
                 prevCanvas = null;
-                foreach(KeyValuePair<CanvasType, Canvas> c in canvases)
+                foreach (KeyValuePair<CanvasType, Canvas> c in canvases)
                 {
-                    
                     c.Value.gameObject.SetActive(false);
                     Debug.LogWarning($"Key {c.Key} ValueActive: {c.Value.gameObject.activeSelf}");
                 }
+
                 SetCursorLock(true);
                 return;
             }
+
+            Canvas canvas; 
+            canvases.TryGetValue(type, out canvas);
 
             prevCanvas = canvas;
             canvas.gameObject.SetActive(true);
@@ -117,6 +123,8 @@ namespace Assets.Scripts.Game
         {
             Canvas canvas;
             canvases.TryGetValue(type, out canvas);
+
+            if (type == CanvasType.NONE && lockCursor) return true; //In game
 
             return canvas != null && canvas.gameObject.activeSelf;
         }
@@ -133,9 +141,8 @@ namespace Assets.Scripts.Game
         {
             lockCursor = value;
             if (!lockCursor)
-            {//we force unlock the cursor if the user disable the cursor locking helper
+            {
                 Cursor.lockState = CursorLockMode.None;
-
                 Cursor.visible = true;
             } else
             {

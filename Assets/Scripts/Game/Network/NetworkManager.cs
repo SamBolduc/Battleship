@@ -14,10 +14,15 @@ public class NetworkManager
     public void Init()
     {
         client = new TcpClient();
-        client.Connect("188.40.72.202", 8989);
+        client.Connect("127.0.0.1", 8989);
         isHead = true;
         if (_initialized) return;
         _initialized = true;
+    }
+
+    public void Disconnect()
+    {
+        client?.Close();
     }
 
     public void Send(byte[] msg)
