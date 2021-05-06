@@ -23,7 +23,6 @@ namespace Assets.Scripts.Game.Network.Packets
             RegisterPacket<PlayerLeftPacket>(6);
             RegisterPacket<AttackPacket>(7);
             RegisterPacket<BoatStatusPacket>(8);
-
         }
 
         public Type GetType(int packetId)

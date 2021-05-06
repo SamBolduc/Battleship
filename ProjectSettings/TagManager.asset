@@ -21,6 +21,7 @@ TagManager:
   - CRUISER
   - SUBMARINE
   - DESTROYER
+  - Fire
   layers:
   - Default
   - TransparentFX

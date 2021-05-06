@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = System.Random;
 
 namespace Assets.Scripts.Game
@@ -18,41 +19,56 @@ namespace Assets.Scripts.Game
         public Canvas escMenu;
         public Canvas parametersMenu;
 
+        public GameObject attackCircle;
+        public GameObject boatStatus;
+
+        private static Game instance;
+
+        public static Game GetGameObject()
+        {
+            return instance;
+        }
+
         public static Dictionary<CanvasType, Canvas> canvases = new Dictionary<CanvasType, Canvas>();
-
-        public static List<Boat> MyBoats = new List<Boat>();
-        public static List<Boat> EnemyBoats = new List<Boat>();
-
-        public static List<AttackLog> AttackLogs = new List<AttackLog>();
 
         public string Username { get; set; }
         public static bool turn { get; set; }
         public static bool lockCursor = true;
 
-        public static void UpdateBoats(BoatStatusPacket packet)
+        public static void UpdateBoats(List<Boat> myBoats, List<Boat> enemyBoats)
         {
-            MyBoats = packet.myBoats;
-            EnemyBoats = packet.enemyBoats;
+            Game game = Game.GetGameObject();
+            if (game == null) return;
+            game.boatStatus.GetComponent<BoatStatusScript>().UpdateStatus(myBoats, enemyBoats);
+        }
 
-            //TODO: Update UI
+        public static void AttackResponse(AttackPacket packet)
+        {
+            Game game = Game.GetGameObject();
+            if (game == null) return;
+            var canvas = Game.getByType(CanvasType.ATTACK);
+            if (canvas == null) return;
+
+            var position = new Vector3(packet.x, packet.y, 0);
+            var rotation = new Quaternion(0,0,0,0);
+
+            Image circle = Instantiate(game.attackCircle, position, rotation).GetComponent<Image>();
+            if (packet.damageDealt > 0)
+            {
+                circle.color = new Color32(239, 83, 80, 100);
+            }
+            circle.transform.SetParent(canvas.transform, false);
         }
 
         void Start()
         {
+            instance = this;
             canvases.Add(CanvasType.ESC, escMenu);
             canvases.Add(CanvasType.ATTACK, attackMenu);
             canvases.Add(CanvasType.PARAMETERS, parametersMenu);
 
-            for (int i = 0; i < 25; i++)
-            {
-                AttackLog log = new AttackLog();
-                log.x = new Random().Next(-50, 50);
-                log.y = new Random().Next(-50, 50);
-                log.DamageDealt = new Random().Next(50);
-                AttackLogs.Add(log);
-            }
-
             HideAll();
+
             OverlayManager overlay = GameObject.FindObjectOfType<OverlayManager>();
             if (turn)
             {

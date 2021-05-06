@@ -19,12 +19,7 @@ namespace Assets.Scripts.Game.Network.Packets.Types
 
         public override void Read()
         {
-            AttackLog log = new AttackLog();
-            log.x = x;
-            log.y = y;
-            log.DamageDealt = damageDealt;
-
-            Game.AttackLogs.Add(log);
+            Game.AttackResponse(this);
         }
     }
 }

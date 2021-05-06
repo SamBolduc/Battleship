@@ -8,6 +8,7 @@ using Assets.Scripts.BoatSelector;
 
 namespace Assets.Scripts.Game
 {
+    [Serializable]
     public class Boat
     {
         public string name { get; set; }
