@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = System.Random;
 
 public class OverlayManager : MonoBehaviour
 {
 
+    private int _id;
     public void DisplayText(string title, string message, int time)
     {
         Text[] texts = GetComponentsInChildren<Text>();
@@ -14,7 +16,11 @@ public class OverlayManager : MonoBehaviour
             texts[0].text = title;
             texts[1].text = message;
         }
-        StartCoroutine(FadeOutText(time));
+
+        int id = new Random().Next(100);
+        if (id == _id) id++;
+
+        StartCoroutine(FadeOutText(time, id));
     }
 
     public void DisplayLoader()
@@ -22,11 +28,11 @@ public class OverlayManager : MonoBehaviour
 
     }
 
-    IEnumerator FadeOutText(int seconds)
+    IEnumerator FadeOutText(int seconds, int id)
     {
         yield return new WaitForSeconds(seconds);
         Text[] texts = GetComponentsInChildren<Text>();
-        if (texts.Length == 2)
+        if (texts.Length == 2 && _id == id)
         {
             texts[0].text = "";
             texts[1].text = "";

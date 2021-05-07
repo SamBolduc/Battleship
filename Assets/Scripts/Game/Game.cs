@@ -67,6 +67,11 @@ namespace Assets.Scripts.Game
             canvases.Add(CanvasType.ATTACK, attackMenu);
             canvases.Add(CanvasType.PARAMETERS, parametersMenu);
 
+            ShowOverlay();
+        }
+
+        public void ShowOverlay()
+        {
             HideAll();
 
             OverlayManager overlay = GameObject.FindObjectOfType<OverlayManager>();
@@ -109,6 +114,12 @@ namespace Assets.Scripts.Game
 
             if (IsActive(CanvasType.ATTACK))
             {
+                if (!turn)
+                {
+                    ShowMenu(CanvasType.NONE);
+                    return;
+                }
+
                 if (Input.GetKeyDown(KeyCode.Mouse0))
                 {
                     Vector2 mouse = Input.mousePosition;
