@@ -32,6 +32,11 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene(2);
     }
 
+    public void GoToInstructions()
+    {
+        SceneManager.LoadScene(9);
+    }
+
     public void FindGame()
     {
         new PlayPacket()
