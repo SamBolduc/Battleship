@@ -21,7 +21,10 @@ namespace Assets.Scripts.Game.Network.Packets.Types
         {
             Game.turn = turn;
             Game game = Object.FindObjectOfType<Game>();
-            game.ShowOverlay();
+            if (game != null)
+            {
+                game.ShowOverlay();
+            }
         }
     }
 }

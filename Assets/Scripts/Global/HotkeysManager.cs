@@ -152,7 +152,7 @@ public class HotkeysManager
         }
     }
 
-    private Hotkey GetHotkey(string name)
+    public Hotkey GetHotkey(string name)
     {
         foreach (Hotkey key in Keys)
         {
@@ -174,6 +174,11 @@ public class HotkeysManager
         if (File.Exists(_filePath))
         {
             Keys = JsonConvert.DeserializeObject<List<Hotkey>>(File.ReadAllText(_filePath));
+
+            foreach (var hotkey in Keys)
+            {
+                UpdateButton(hotkey.Name);
+            }
         }
     }
 

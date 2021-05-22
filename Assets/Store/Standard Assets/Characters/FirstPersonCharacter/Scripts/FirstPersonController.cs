@@ -76,7 +76,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump)
             {
-                m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
+                m_Jump = Input.GetKeyDown(HotkeysManager.Get().GetHotkey("HOTKEY_JUMP").KeyCode);
             }
 
             if (!m_PreviouslyGrounded && m_CharacterController.isGrounded)
@@ -242,15 +242,33 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void GetInput(out float speed)
         {
             // Read input
-            float horizontal = CrossPlatformInputManager.GetAxis("Horizontal");
-            float vertical = CrossPlatformInputManager.GetAxis("Vertical");
+            float horizontal = 0;
+            float vertical = 0;
+
+
+            if (Input.GetKey(HotkeysManager.Get().GetHotkey("HOTKEY_BACKWARD").KeyCode))
+            {
+                vertical = -1;
+            } else if (Input.GetKey(HotkeysManager.Get().GetHotkey("HOTKEY_FORWARD").KeyCode))
+            {
+                vertical = 1;
+            }
+
+            if (Input.GetKey(HotkeysManager.Get().GetHotkey("HOTKEY_LEFT").KeyCode))
+            {
+                horizontal = -1;
+            }
+            else if (Input.GetKey(HotkeysManager.Get().GetHotkey("HOTKEY_RIGHT").KeyCode))
+            {
+                horizontal = 1;
+            }
 
             bool waswalking = m_IsWalking;
 
 #if !MOBILE_INPUT
             // On standalone builds, walk/run speed is modified by a key press.
             // keep track of whether or not the character is walking or running
-            m_IsWalking = !Input.GetKey(KeyCode.LeftShift);
+            m_IsWalking = !Input.GetKey(HotkeysManager.Get().GetHotkey("HOTKEY_SPRINT").KeyCode);
 #endif
             // set the desired speed to be walking or running
             speed = m_IsWalking ? m_WalkSpeed : m_RunSpeed;

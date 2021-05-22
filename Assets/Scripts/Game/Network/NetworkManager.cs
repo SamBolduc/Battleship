@@ -14,7 +14,7 @@ public class NetworkManager
     public void Init()
     {
         client = new TcpClient();
-        client.Connect("51.195.60.90", 8989);
+        client.Connect("127.0.0.1", 8989);
         isHead = true;
         if (_initialized) return;
         _initialized = true;

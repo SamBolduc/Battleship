@@ -92,7 +92,7 @@ namespace Assets.Scripts.Game
 
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(HotkeysManager.Get().GetHotkey("HOTKEY_INTERACT").KeyCode))
             {
                 if (turn && !IsActive(CanvasType.ATTACK))
                 {
