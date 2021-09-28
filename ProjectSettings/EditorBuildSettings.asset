@@ -4,5 +4,38 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Main menu/MainMenu.unity
+    guid: 96791adffcfd1b842838b5af361f770c
+  - enabled: 1
+    path: Assets/Scenes/Main menu/CreditsMenu.unity
+    guid: 0d5cfac9da725ce45b9b708eaafcc391
+  - enabled: 1
+    path: Assets/Scenes/Main menu/Parameters.unity
+    guid: 5f06354b13ee49b44ba6a28fe313cede
+  - enabled: 1
+    path: Assets/Scenes/InteriorScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/BoatPositions.unity
+    guid: 66a4340447d11974f8c7db1e4e3e62de
+  - enabled: 1
+    path: Assets/Scenes/WaitingForOpponent.unity
+    guid: bcfc8113c6489b645b36be4ce5bf23cb
+  - enabled: 1
+    path: Assets/Scenes/WaitingForOtherBord.unity
+    guid: 62491ea7cdeeb0547aac10ec98e43918
+  - enabled: 1
+    path: Assets/Scenes/PlayerLeft.unity
+    guid: f9edbf3929675284da7851fbb2baa8de
+  - enabled: 1
+    path: Assets/Scenes/PlayerWin.unity
+    guid: 6d24964575f6a2143899b1d79a1cee69
+  - enabled: 1
+    path: Assets/Scenes/Main menu/Instructions.unity
+    guid: cf124655c083de948bdd7ceadec7cfeb
+  - enabled: 1
+    path: Assets/Scenes/PlayerLoose.unity
+    guid: ac86583da2e1be746b0b53c0e88e1d34
   m_configObjects: {}

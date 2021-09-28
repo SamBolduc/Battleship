@@ -3,7 +3,25 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - HOTKEY_FORWARD
+  - HOTKEY_BACKWARD
+  - HOTKEY_RIGHT
+  - HOTKEY_LEFT
+  - HOTKEY_JUMP
+  - HOTKEY_SPRINT
+  - HOTKEY_INTERACT
+  - AMBIANT_SOUND
+  - SPECIAL_EFFECTS
+  - TABLET
+  - BOAT_PREVIEW
+  - MAP
+  - CARRIER
+  - BATTLESHIP
+  - CRUISER
+  - SUBMARINE
+  - DESTROYER
+  - Fire
   layers:
   - Default
   - TransparentFX
@@ -13,8 +31,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - Ground
+  - PlayerBody
   - 
   - 
   - 
